@@ -1,34 +1,31 @@
-import userModel from "../models/userModel.js"
+import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import validator from "validator"
 
 
-//login
-const createToken =(id)=>{
-    return jwt.sign({id},process.env.JWT_SECRET)
-}
-
-const loginUser =async(req,res)=>{
-    const {email,password}=req.body;
-
+const loginUser = async(req,res) => {
+    const {email,password} = req.body;
     try {
         const user = await userModel.findOne({email});
-        if(!user)return res.json({success:false,message:"User Does Not Exist"});
-
-        const isMatch =await bcrypt.compare(password,user.password);
-        if(!isMatch)return res.json({success:false,message:"Invalid Credentials"});
-
-        const token =createToken(user._id);
-        res.json({success:true,token});
-        
+        if(!user){
+            return res.json({success:false,message:"User Doesn't exist"})
+        }
+        const isMatch = await bcrypt.compare(password,user.password);
+        if(!isMatch){
+            return res.json({success:false,message:"Invalid credentials"})
+        }
+        const token = createToken(user._id);
+        res.json({success:true,token})
     } catch (error) {
         console.log(error);
-        return res.json({success:false,message:"Error"});
+        res.json({success:false,message:"Error has Occured"})
     }
 }
 
-//register user
+const createToken = (id) => {
+    return jwt.sign({id},process.env.JWT_SECRET)
+}
 
 const registerUser = async(req,res) => {
     const {name,email,password} = req.body;
@@ -55,8 +52,8 @@ const registerUser = async(req,res) => {
         res.json({success:true,token})
     } catch (error) {
         console.log(error);
-        res.json({success:false,message:"Error"})
+        res.json({success:false,message:"Error has Occured"})
     }
 }
 
-export {loginUser,registerUser};
+export {loginUser,registerUser}

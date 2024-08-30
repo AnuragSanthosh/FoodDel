@@ -5,8 +5,7 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const placeOrder = async (req, res) => {
-    const frontend_url = process.env.USER_FRONTEND_URL || 'http://localhost:5175';
-
+    const frontend_url = process.env.USER_FRONTEND_URL;
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,
