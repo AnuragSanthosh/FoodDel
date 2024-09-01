@@ -33,4 +33,3 @@ app.listen(process.env.PORT,()=>{
     console.log(`Server is running on PORT ${PORT}`)
 })
 
-//mongodb+srv://tarunnemali2004:Iamtarun2004@cluster0.cdklqgg.mongodb.net/?
